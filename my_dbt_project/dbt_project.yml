@@ -1,0 +1,76 @@
+
+# ============================================================
+# 1. IDENTIFICATION DU PROJET
+# ============================================================
+
+# Nom unique du projet dbt (minuscules et underscores uniquement)
+name: 'my_dbt_project'
+
+# Version du projet
+version: '1.0.0'
+
+
+# ============================================================
+# 2. CONFIGURATION DU PROFIL DE CONNEXION
+# ============================================================
+
+# Nom du profil défini dans le fichier profiles.yml
+# Ce profil contient les paramètres de connexion à PostgreSQL
+profile: 'my_dbt_project'
+
+
+# ============================================================
+# 3. ORGANISATION DES DOSSIERS DU PROJET
+# ============================================================
+
+# Dossier contenant les modèles SQL de transformation
+model-paths: ["models"]
+
+# Dossier contenant les analyses SQL personnalisées
+analysis-paths: ["analyses"]
+
+# Dossier contenant les tests de données
+test-paths: ["tests"]
+
+# Dossier contenant les fichiers de données à charger (seeds)
+seed-paths: ["seeds"]
+
+# Dossier contenant les macros personnalisées
+macro-paths: ["macros"]
+
+# Dossier contenant les snapshots dbt
+snapshot-paths: ["snapshots"]
+
+
+# ============================================================
+# 4. DOSSIERS À SUPPRIMER LORS DE DBT CLEAN
+# ============================================================
+
+# dbt clean supprime les dossiers générés lors de l'exécution
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+
+# ============================================================
+# 5. CONFIGURATION DES MODÈLES DBT
+# ============================================================
+
+models:
+  my_dbt_project:
+
+    # --------------------------------------------------------
+    # STAGING : préparation et standardisation des données RAW
+    # --------------------------------------------------------
+
+    # Les modèles Staging seront matérialisés sous forme de vues
+    staging:
+      +materialized: view
+
+    # --------------------------------------------------------
+    # MARTS : modèles destinés à l'analyse et à Power BI
+    # --------------------------------------------------------
+
+    # Les modèles Marts seront matérialisés sous forme de tables
+    marts:
+      +materialized: table

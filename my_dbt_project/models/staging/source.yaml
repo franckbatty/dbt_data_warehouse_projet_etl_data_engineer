@@ -1,0 +1,26 @@
+
+# Version de la configuration des propriétés dbt
+version: 2
+
+# Déclaration des sources de données
+sources:
+
+  # Nom logique de la source utilisée dans les modèles SQL
+  - name: raw
+
+    # Description générale de la source
+    description: "Données brutes chargées dans PostgreSQL"
+
+    # Nom du schéma PostgreSQL dans lequel se trouvent les tables
+    schema: etl_dw
+
+    # Liste des tables appartenant à cette source
+    tables:
+
+      # Première table : informations sur les clients
+      - name: customers
+        description: "Table brute contenant les informations des clients"
+
+      # Deuxième table : informations sur les commandes
+      - name: orders
+        description: "Table brute contenant les informations des commandes"

@@ -1,0 +1,70 @@
+
+# ============================================================
+# CONFIGURATION DES TESTS DE QUALITÉ DES MODÈLES STAGING
+# ============================================================
+
+version: 2
+
+models:
+
+  # ==========================================================
+  # 1. TESTS DU MODÈLE CLIENTS
+  # ==========================================================
+
+  - name: stg_customers
+    description: "Vue de préparation et de nettoyage des clients."
+
+    columns:
+
+      # L'identifiant client doit être renseigné et unique
+      - name: identifiant_client
+        description: "Identifiant unique de chaque client."
+        data_tests:
+          - not_null
+          - unique
+
+      # L'adresse email doit être renseignée et unique
+      - name: email
+        description: "Adresse électronique du client."
+        data_tests:
+          - not_null
+          - unique
+
+
+  # ==========================================================
+  # 2. TESTS DU MODÈLE COMMANDES
+  # ==========================================================
+
+  - name: stg_orders
+    description: "Vue de préparation et de nettoyage des commandes."
+
+    columns:
+
+      # Chaque commande doit avoir un identifiant unique
+      - name: identifiant_commande
+        description: "Identifiant unique de la commande."
+        data_tests:
+          - not_null
+          - unique
+
+      # Chaque commande doit être associée à un client existant
+      - name: identifiant_client
+        description: "Identifiant du client ayant passé la commande."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: identifiant_client
+
+      # Vérification des statuts autorisés
+      - name: statut
+        description: "État actuel de la commande."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - completed
+                  - pending
+                  - cancelled
