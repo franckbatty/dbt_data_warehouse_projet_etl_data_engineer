@@ -1,0 +1,16 @@
+
+# ============================================================
+# FICHIER : PACKAGES.YML
+# OBJECTIF : Déclarer les dépendances externes du projet dbt
+# ============================================================
+
+packages:
+
+  # Installation du package dbt_date pour générer
+  # automatiquement les dimensions temporelles (DIM_DATE)
+  - package: godatadriven/dbt_date
+
+    # Définition de la plage de versions autorisées :
+    # Version minimale : 0.10.0
+    # Version maximale : avant la 0.11.0
+    version: [">=0.10.0", "<0.11.0"]

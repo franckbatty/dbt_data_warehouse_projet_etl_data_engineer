@@ -1,0 +1,80 @@
+
+# ============================================================
+# FICHIER : SCHEMA.YML
+# OBJECTIF : Définir les tests de qualité des modèles MARTS
+# ============================================================
+
+version: 2
+
+models:
+
+  # ----------------------------------------------------------
+  # DIMENSION CLIENTS
+  # ----------------------------------------------------------
+  - name: dim_customers
+    description: "Dimension contenant les informations des clients."
+
+    columns:
+      - name: customer_key
+        description: "Clé de substitution unique du client."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: identifiant_client
+        description: "Identifiant métier provenant de la source."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: email
+        description: "Adresse électronique du client."
+        data_tests:
+          - not_null
+          - unique
+
+  # ----------------------------------------------------------
+  # TABLE DE FAITS COMMANDES
+  # ----------------------------------------------------------
+  - name: fact_orders
+    description: "Table de faits contenant les commandes et leurs montants."
+
+    columns:
+      - name: order_key
+        description: "Clé de substitution unique de la commande."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_key
+        description: "Clé étrangère vers la dimension clients."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_key
+
+      - name: identifiant_commande
+        description: "Identifiant métier de la commande."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: montant_commande
+        description: "Montant calculé à partir de la quantité et du prix unitaire."
+        data_tests:
+          - not_null
+
+  # ----------------------------------------------------------
+  # DIMENSION TEMPORELLE
+  # ----------------------------------------------------------
+  - name: dim_date
+    description: "Dimension contenant les attributs calendaires."
+
+    columns:
+      - name: date_day
+        description: "Date calendaire."
+        data_tests:
+          - not_null
+          - unique
