@@ -68,3 +68,15 @@ models:
                   - completed
                   - pending
                   - cancelled
+      
+            # Date de création de l'enregistrement
+      - name: created_at
+        description: "Date et heure de création du client."
+        data_tests:
+          - not_null
+
+      # Date de dernière modification
+      - name: updated_at
+        description: "Date et heure de dernière modification du client."
+        data_tests:
+          - not_null

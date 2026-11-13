@@ -26,7 +26,9 @@ final AS (
         nom,                -- Nom du client
         email,              -- Adresse électronique du client
         ville,              -- Ville de résidence du client
-        date_inscription    -- Date d'inscription du client
+        date_inscription,    -- Date d'inscription du client
+        created_at,
+        updated_at
 
     FROM customers
 

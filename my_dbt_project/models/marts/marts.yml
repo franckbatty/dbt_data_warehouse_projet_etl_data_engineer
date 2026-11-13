@@ -33,6 +33,16 @@ models:
           - not_null
           - unique
 
+      - name: created_at
+        description: "Date et heure de création du client."
+        data_tests:
+          - not_null
+
+      - name: updated_at
+        description: "Date et heure de dernière modification du client."
+        data_tests:
+          - not_null
+
   # ----------------------------------------------------------
   # TABLE DE FAITS COMMANDES
   # ----------------------------------------------------------
@@ -63,6 +73,16 @@ models:
 
       - name: montant_commande
         description: "Montant calculé à partir de la quantité et du prix unitaire."
+        data_tests:
+          - not_null
+
+      - name: created_at
+        description: "Date et heure de création de la commande."
+        data_tests:
+          - not_null
+
+      - name: updated_at
+        description: "Date et heure de dernière modification de la commande."
         data_tests:
           - not_null
 

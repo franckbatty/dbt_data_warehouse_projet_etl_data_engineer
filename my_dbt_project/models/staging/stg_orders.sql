@@ -37,7 +37,10 @@ renamed AS (
         prix_unitaire AS prix_unitaire,
 
         -- Harmonisation du statut en minuscules
-        LOWER(TRIM(statut)) AS statut
+        LOWER(TRIM(statut)) AS statut,
+        -- Dates de traçabilité
+        created_at,
+        updated_at
 
     FROM source
 

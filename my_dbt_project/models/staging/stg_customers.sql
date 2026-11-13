@@ -34,7 +34,9 @@ renamed AS (
         TRIM(ville) AS ville,
 
         -- Conversion du timestamp en millisecondes vers une date
-        date_inscription
+        date_inscription,
+        created_at,
+        updated_at
 
     FROM source
 

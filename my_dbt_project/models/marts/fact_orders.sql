@@ -39,7 +39,10 @@ final AS (
         o.produit,                  -- Produit commandé
         o.quantite,                 -- Quantité commandée
         o.prix_unitaire,            -- Prix unitaire du produit
-        o.statut,                   -- Statut de la commande
+        o.statut,                   -- Statut de la commande,
+        -- Dates de traçabilité
+        o.created_at,
+        o.updated_at, 
 
         (o.quantite * o.prix_unitaire) AS montant_commande
         -- Calcul du montant total de la commande
