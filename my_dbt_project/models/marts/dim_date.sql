@@ -33,4 +33,4 @@ final AS (
 
 -- Restitution de la dimension temporelle
 SELECT *
-FROM final
+FROM final 

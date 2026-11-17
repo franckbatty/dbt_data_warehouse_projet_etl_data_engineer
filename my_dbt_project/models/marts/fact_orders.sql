@@ -2,9 +2,9 @@
 -- ============================================================
 -- MODÈLE : FACT_ORDERS
 -- OBJECTIF : Construire la table de faits des commandes
--- SOURCES : STG_ORDERS et DIM_CUSTOMERS
--- CLÉ PRIMAIRE : ORDER_KEY (clé de substitution)
--- CLÉ ÉTRANGÈRE : CUSTOMER_KEY
+-- SOURCES : STG_ORDERS, DIM_CUSTOMERS et DIM_DATE
+-- CLÉ PRIMAIRE : ORDER_KEY
+-- CLÉS ÉTRANGÈRES : CUSTOMER_KEY et DATE_KEY
 -- ============================================================
 
 WITH orders AS (
@@ -25,33 +25,50 @@ customers AS (
 
 ),
 
+dates AS (
+
+    -- Récupération des clés de la dimension temporelle
+    SELECT
+        date_key,
+        date_day
+    FROM {{ ref('dim_date') }}
+
+),
+
 final AS (
 
-    -- Construction de la table de faits et calcul des montants
+    -- Construction de la table de faits
     SELECT
-        ROW_NUMBER() OVER (ORDER BY o.identifiant_commande) AS order_key, -- Clé de substitution unique de la commande
+        ROW_NUMBER() OVER (
+            ORDER BY o.identifiant_commande
+        ) AS order_key,
 
-        c.customer_key,             -- Clé étrangère vers DIM_CUSTOMERS
+        c.customer_key, -- Clé étrangère vers DIM_CUSTOMERS
+        d.date_key,     -- Clé étrangère vers DIM_DATE
 
-        o.identifiant_commande,     -- Identifiant métier de la commande
-        o.identifiant_client,       -- Identifiant client provenant de la source
-        o.date_commande,            -- Date de la commande
-        o.produit,                  -- Produit commandé
-        o.quantite,                 -- Quantité commandée
-        o.prix_unitaire,            -- Prix unitaire du produit
-        o.statut,                   -- Statut de la commande,
-        -- Dates de traçabilité
+        o.identifiant_commande,
+        o.identifiant_client,
+        o.date_commande,
+        o.produit,
+        o.quantite,
+        o.prix_unitaire,
+        o.statut,
+
         o.created_at,
-        o.updated_at, 
+        o.updated_at,
 
-        (o.quantite * o.prix_unitaire) AS montant_commande
         -- Calcul du montant total de la commande
+        (o.quantite * o.prix_unitaire) AS montant_commande
 
     FROM orders o
 
     -- Association de chaque commande à son client
     INNER JOIN customers c
         ON o.identifiant_client = c.identifiant_client
+
+    -- Association de chaque commande à sa date
+    INNER JOIN dates d
+        ON o.date_commande = d.date_day
 
 )
 

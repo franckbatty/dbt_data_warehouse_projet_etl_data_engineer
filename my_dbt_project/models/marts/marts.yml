@@ -4,7 +4,7 @@
 # OBJECTIF : Définir les tests de qualité des modèles MARTS
 # ============================================================
 
-version: 2
+version: 2 
 
 models:
 
@@ -65,6 +65,15 @@ models:
                 to: ref('dim_customers')
                 field: customer_key
 
+      - name: date_key
+        description: "Clé étrangère vers la dimension temporelle."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+
       - name: identifiant_commande
         description: "Identifiant métier de la commande."
         data_tests:
@@ -93,6 +102,12 @@ models:
     description: "Dimension contenant les attributs calendaires."
 
     columns:
+      - name: date_key
+        description: "Clé primaire technique au format AAAAMMJJ."
+        data_tests:
+          - not_null
+          - unique
+
       - name: date_day
         description: "Date calendaire."
         data_tests:
